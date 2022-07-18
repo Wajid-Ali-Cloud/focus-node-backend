@@ -41,7 +41,7 @@ const sendContactForm = async (req, res) => {
       let mailDetails = {
         from: "wajiddj421@gmail.com",
         to: "hmughal0123@gmail.com",
-        subject: data?.reason,
+        subject: data.reason,
         // text: "Node.js testing mail for GeeksforGeeks",
         text: data,
       };
