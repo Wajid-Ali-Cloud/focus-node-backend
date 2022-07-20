@@ -105,7 +105,6 @@ const updateProducts = async (req, res) => {
 };
 
 const deleteProducts = async (req, res) => {
-  console.log("id ----->", req.params.id);
   ProductsModel.findByIdAndRemove(req.params.id)
     .then((data) => {
       if (!data) {
