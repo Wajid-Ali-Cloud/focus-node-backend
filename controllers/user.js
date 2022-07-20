@@ -37,7 +37,7 @@ const userRegister = async (req, res) => {
       .then((data) => {
         return res.status(200).send({
           success: true,
-          message: "Message successfully send",
+          message: "User account successfully created!",
           data: data,
         });
       })
@@ -53,11 +53,13 @@ const userRegister = async (req, res) => {
   }
 };
 
-const loginUser = async (req, res) => {
+const userLogin = async (req, res) => {
   try {
     await userModel
       .findOne({ email: req.body.email })
       .then((user) => {
+        console.log("user----> ", user);
+
         if (req.body.password === user.password) {
           return res.status(200).json({ success: true, user });
         } else {
@@ -72,8 +74,7 @@ const loginUser = async (req, res) => {
   }
 };
 
-const updateUser = async (req, res) => {
-    console.log("console---------->", req.params.id)
+const userUpdate = async (req, res) => {
   if (
     !req.body.firstName ||
     !req.body.lastName ||
@@ -95,7 +96,6 @@ const updateUser = async (req, res) => {
       { new: true }
     )
     .then((data) => {
-      console.log("prams id --------->", req?.params?.id )
       if (!data) {
         return res.status(404).send({
           success: false,
@@ -121,4 +121,4 @@ const updateUser = async (req, res) => {
     });
 };
 
-module.exports = { getUsers, userRegister, loginUser, updateUser };
+module.exports = { getUsers, userRegister, userLogin, userUpdate };

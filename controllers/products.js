@@ -50,6 +50,7 @@ const addProducts = async (req, res) => {
 };
 
 const updateProducts = async (req, res) => {
+  console.log("body ----->", req.query);
   if (!req.body.productName || !req.body.productPrice) {
     return res.status(400).send({
       success: false,

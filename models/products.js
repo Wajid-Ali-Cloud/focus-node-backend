@@ -6,15 +6,15 @@ const ProductsSchema = mongoose.Schema(
       type: String,
       require: [true, "product image is Required"],
     },
-    productName: {
+    title: {
       type: String,
       require: [true, "product name is required"],
     },
-    productDescription: {
+    description: {
       type: String,
       require: [true, "product description is required"],
     },
-    productPrice: {
+    regularPrice: {
       type: String,
       require: [true, "product price is required"],
     },
