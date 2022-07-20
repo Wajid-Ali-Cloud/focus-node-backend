@@ -18,15 +18,23 @@ const ProductsSchema = mongoose.Schema(
       type: String,
       require: [true, "product price is required"],
     },
-    productCategory: {
+    salePrice: {
       type: String,
-      require: [true, "product category is required"],
+      require: [true, "product price is required"],
     },
-    productColor: {
-      type: String,
+    color: {
+      type: Object,
       require: [true, "product color is required"],
     },
-    productFeature: {
+    size: {
+      type: Object,
+      require: [true, "product feature is required"],
+    },
+    category: {
+      type: Object,
+      require: [true, "product category is required"],
+    },
+    feature: {
       type: String,
       require: [true, "product feature is required"],
     },

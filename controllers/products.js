@@ -13,12 +13,15 @@ const getProducts = async (req, res) => {
 const addProducts = async (req, res) => {
   let product = new ProductsModel({
     productImage: req.file.path.toString(),
-    productName: req.body.productName,
-    productDescription: req.body.productDescription,
-    productPrice: req.body.productPrice,
-    productCategory: req.body.productCategory,
-    productColor: req.body.productColor,
-    productFeature: req.body.productFeature,
+    title: req.body.title,
+    description: req.body.description,
+    regularPrice: req.body.regularPrice,
+    salePrice: req.body.salePrice,
+    color: req.body.color,
+    size: req.body.size,
+    color: req.body.color,
+    category: req.body.category,
+    feature: req.body.feature,
   });
 
   try {
@@ -50,8 +53,18 @@ const addProducts = async (req, res) => {
 };
 
 const updateProducts = async (req, res) => {
-  console.log("body ----->", req.query);
-  if (!req.body.productName || !req.body.productPrice) {
+  if (
+    !req.file.path.toString() ||
+    !req.body.title ||
+    !req.body.description ||
+    !req.body.regularPrice ||
+    !req.body.salePrice ||
+    !req.body.color ||
+    !req.body.size ||
+    !req.body.color ||
+    !req.body.category ||
+    !req.body.feature
+  ) {
     return res.status(400).send({
       success: false,
       message: "Please enter product name and price",
