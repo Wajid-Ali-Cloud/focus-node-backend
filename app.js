@@ -7,10 +7,11 @@ const app = express();
 
 const PORT = process.env.PORT || 5001;
 
-app.use(express.json({ extended: true }));
-app.use(express.urlencoded({ extended: true }));
 app.use(morgan("tiny"));
 app.use(cors());
+app.use(express.json({ extended: true }));
+app.use(express.urlencoded({ extended: true }));
+app.use("/public", express.static("public"));
 
 app.get("/", (req, res) => {
   res.json("Server Running Successfully");

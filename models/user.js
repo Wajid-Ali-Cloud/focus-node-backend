@@ -4,9 +4,11 @@ const UserSchema = mongoose.Schema(
   {
     firstName: {
       type: String,
+      require: [true, "Please enter your first Name"],
     },
     lastName: {
       type: String,
+      require: [true, "Please enter your last Name"],
     },
     email: {
       type: String,

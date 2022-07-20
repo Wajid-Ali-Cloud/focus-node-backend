@@ -1,6 +1,6 @@
 const ProductsModel = require("../models/products");
 
-const getProducts = async (req, res) => {
+const getProducts = async (res) => {
   ProductsModel.find()
     .then((data) => {
       return res.status(200).json({ success: true, data });
@@ -54,7 +54,7 @@ const addProducts = async (req, res) => {
 
 const updateProducts = async (req, res) => {
   if (
-    !req.file.path.toString() ||
+    !req.body.productImage ||
     !req.body.title ||
     !req.body.description ||
     !req.body.regularPrice ||

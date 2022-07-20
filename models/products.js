@@ -4,7 +4,7 @@ const ProductsSchema = mongoose.Schema(
   {
     productImage: {
       type: String,
-      require: [true, "product image is Required"],
+      require: [true, "product Image is required"],
     },
     title: {
       type: String,
