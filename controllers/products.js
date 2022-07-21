@@ -1,6 +1,6 @@
 const ProductsModel = require("../models/products");
 
-const getProducts = async (res) => {
+const getProducts = async (req, res) => {
   ProductsModel.find()
     .then((data) => {
       return res.status(200).json({ success: true, data });
@@ -12,7 +12,7 @@ const getProducts = async (res) => {
 
 const addProducts = async (req, res) => {
   let product = new ProductsModel({
-    productImage: "http://18.212.22.154:5001/" + req.file.path.toString(),
+    productImage: req.file.path.toString(),
     title: req.body.title,
     description: req.body.description,
     regularPrice: req.body.regularPrice,
@@ -54,7 +54,7 @@ const addProducts = async (req, res) => {
 
 const updateProducts = async (req, res) => {
   if (
-    !req.body.productImage ||
+    !req.body.productImage() ||
     !req.body.title ||
     !req.body.description ||
     !req.body.regularPrice ||
