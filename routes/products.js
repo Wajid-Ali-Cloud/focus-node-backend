@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const {
-  getProducts,
+  getAllProducts,
+  getProduct,
   addProducts,
   updateProducts,
   deleteProducts,
@@ -18,7 +19,8 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
-router.get("/getProducts", getProducts);
+router.get("/getAllProducts", getAllProducts);
+router.get("/getAllProducts/:id", getProduct);
 router.post("/addProducts", upload.single("productImage"), addProducts);
 router.put("/updateProducts", upload.single("productImage"), updateProducts);
 router.delete("/deleteProducts/:id", deleteProducts);

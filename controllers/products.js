@@ -1,12 +1,31 @@
 const ProductsModel = require("../models/products");
 
-const getProducts = async (req, res) => {
+const getAllProducts = async (req, res) => {
   ProductsModel.find()
     .then((data) => {
       return res.status(200).json({ success: true, data });
     })
     .catch((err) => {
       return res.status(400).json({ success: false, err });
+    });
+};
+
+const getProduct = async (req, res, next) => {
+  ProductsModel.findById({ _id: req.params.id })
+    // .select("_id name price productImage category")
+    // .populate("category")
+    // .exec()
+    .then((data) => {
+      if (data) {
+        res.status(200).json(data);
+      } else {
+        res.status(404).json({
+          message: "Product Not Found!",
+        });
+      }
+    })
+    .catch((error) => {
+      next(error);
     });
 };
 
@@ -133,4 +152,10 @@ const deleteProducts = async (req, res) => {
     });
 };
 
-module.exports = { getProducts, addProducts, updateProducts, deleteProducts };
+module.exports = {
+  getAllProducts,
+  getProduct,
+  addProducts,
+  updateProducts,
+  deleteProducts,
+};
