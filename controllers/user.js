@@ -13,10 +13,18 @@ const getUsers = async (req, res) => {
 
 const userRegister = async (req, res) => {
   let user = new userModel({
+    profileImage: "http://18.212.22.154:5001/" + req.file.path.toString(),
     firstName: req.body.firstName,
     lastName: req.body.lastName,
     email: req.body.email,
     password: req.body.password,
+    phoneNumber: req.body.phoneNumber,
+    address: req.body.address,
+    country: req.body.country,
+    state: req.body.state,
+    city: req.body.city,
+    zipCode: req.body.zipCode,
+    about: req.body.about,
     userRole: req.body.userRole,
   });
 
@@ -76,10 +84,18 @@ const userLogin = async (req, res) => {
 
 const userUpdate = async (req, res) => {
   if (
+    !req.body.profileImage ||
     !req.body.firstName ||
     !req.body.lastName ||
     !req.body.email ||
     !req.body.password ||
+    !req.body.phoneNumber ||
+    !req.body.address ||
+    !req.body.country ||
+    !req.body.state ||
+    !req.body.city ||
+    !req.body.zipCode ||
+    !req.body.about ||
     !req.body.userRole
   ) {
     return res.status(400).send({
@@ -99,7 +115,7 @@ const userUpdate = async (req, res) => {
       if (!data) {
         return res.status(404).send({
           success: false,
-          message: "Product not found with id " + req.params.id,
+          message: "User not found with id " + req.params.id,
         });
       }
       res.send({
@@ -111,14 +127,62 @@ const userUpdate = async (req, res) => {
       if (err.kind === "ObjectId") {
         return res.status(404).send({
           success: false,
-          message: "Product not found with id " + req.params.id,
+          message: "User not found with id " + req.params.id,
         });
       }
       return res.status(500).send({
         success: false,
-        message: "Error updating product with id " + req.params.id,
+        message: "Error updating user with id " + req.params.id,
       });
     });
 };
 
-module.exports = { getUsers, userRegister, userLogin, userUpdate };
+const userChangePassword = async (req, res) => {
+  if (!req.body.password) {
+    return res.status(400).send({
+      success: false,
+      message: "Please enter password",
+    });
+  }
+  userModel
+    .findByIdAndUpdate(
+      req.params.id,
+      {
+        $set: req.body,
+      },
+      { new: true }
+    )
+    .then((data) => {
+      if (!data) {
+        return res.status(404).send({
+          success: false,
+          message: "User not found with id " + req.params.id,
+        });
+      }
+      res.send({
+        success: true,
+        message: "New password has been created",
+        data: data,
+      });
+    })
+    .catch((err) => {
+      if (err.kind === "ObjectId") {
+        return res.status(404).send({
+          success: false,
+          message: "User not found with id " + req.params.id,
+        });
+      }
+      return res.status(500).send({
+        success: false,
+        message: "Error updating user with id " + req.params.id,
+      });
+    });
+};
+
+module.exports = {
+  getUsers,
+  userRegister,
+  userLogin,
+  userUpdate,
+  userChangePassword,
+};

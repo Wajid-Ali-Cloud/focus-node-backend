@@ -29,9 +29,9 @@ const getProduct = async (req, res, next) => {
     });
 };
 
-const addProducts = async (req, res) => {
+const addProduct = async (req, res) => {
   let product = new ProductsModel({
-    productImage: req.file.path.toString(),
+    productImage: "http://18.212.22.154:5001/" + req.file.path.toString(),
     title: req.body.title,
     description: req.body.description,
     regularPrice: req.body.regularPrice,
@@ -56,7 +56,7 @@ const addProducts = async (req, res) => {
       .then((data) => {
         return res.status(200).send({
           success: true,
-          message: "Products successfully send",
+          message: "Products successfully added",
           data: data,
         });
       })
@@ -71,9 +71,9 @@ const addProducts = async (req, res) => {
   }
 };
 
-const updateProducts = async (req, res) => {
+const updateProduct = async (req, res) => {
   if (
-    !req.body.productImage() ||
+    !req.body.productImage ||
     !req.body.title ||
     !req.body.description ||
     !req.body.regularPrice ||
@@ -123,7 +123,7 @@ const updateProducts = async (req, res) => {
     });
 };
 
-const deleteProducts = async (req, res) => {
+const deleteProduct = async (req, res) => {
   ProductsModel.findByIdAndRemove(req.params.id)
     .then((data) => {
       if (!data) {
@@ -155,7 +155,7 @@ const deleteProducts = async (req, res) => {
 module.exports = {
   getAllProducts,
   getProduct,
-  addProducts,
-  updateProducts,
-  deleteProducts,
+  addProduct,
+  updateProduct,
+  deleteProduct,
 };

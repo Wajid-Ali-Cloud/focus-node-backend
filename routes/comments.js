@@ -2,17 +2,17 @@ const router = require("express").Router();
 
 const multer = require("multer");
 
-// const upload = multer();
-
 const {
-  getComments,
-  addComments,
-  deleteComments,
+  getAllComments,
+  getcomment,
+  updateComment,
+  addComment,
+  deleteComment,
 } = require("../controllers/comments");
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "./public/images/commentsimages");
+    cb(null, "./public/images/comments-images");
   },
   filename: function (req, file, cb) {
     cb(null, file.originalname);
@@ -20,13 +20,10 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
-router.get("/getComments", getComments);
-router.post("/addComments", upload.single("commentsImage"), addComments);
-// router.put(
-//   "/updateComments/:id",
-//   upload.single("commentsImage"),
-//   updateComments
-// );
-router.delete("/deleteComments/:id", deleteComments);
+router.get("/getComments", getAllComments);
+router.get("/getComments/:id", getcomment);
+router.post("/addComment", upload.single("commentsImage"), addComment);
+router.put("/updateComment/:id", upload.single("commentsImage"), updateComment);
+router.delete("/deleteComment/:id", deleteComment);
 
 module.exports = router;

@@ -1,7 +1,7 @@
-const CommentModel = require("../models/comments");
+const CommentsModel = require("../models/comments");
 
-const getComments = async (req, res) => {
-  CommentModel.find()
+const getAllComments = async (req, res) => {
+  CommentsModel.find()
     .then((data) => {
       return res.status(200).json({ success: true, data });
     })
@@ -10,9 +10,25 @@ const getComments = async (req, res) => {
     });
 };
 
-const addComments = async (req, res) => {
-  let comments = new CommentModel({
-    commentsImage: req.file.path.toString(),
+const getcomment = async (req, res, next) => {
+  CommentsModel.findById({ _id: req.params.id })
+    .then((data) => {
+      if (data) {
+        res.status(200).json(data);
+      } else {
+        res.status(404).json({
+          message: "Comment Not Found!",
+        });
+      }
+    })
+    .catch((error) => {
+      next(error);
+    });
+};
+
+const addComment = async (req, res) => {
+  let comment = new CommentsModel({
+    commentsImage: "http://18.212.22.154:5001/" + req.file.path.toString(),
     commentsForm: req.body.commentsForm,
     commentsFullName: req.body.commentsFullName,
     commentsEmail: req.body.commentsEmail,
@@ -20,19 +36,19 @@ const addComments = async (req, res) => {
   });
 
   try {
-    if (Object.keys(comments).length === 0) {
+    if (Object.keys(comment).length === 0) {
       res.send({
         success: false,
         message: "Invalid Request",
       });
       return;
     }
-    comments
+    comment
       .save()
       .then((data) => {
         return res.status(200).send({
           success: true,
-          message: "comment successfully send",
+          message: "comment successfully added",
           data: data,
         });
       })
@@ -47,66 +63,65 @@ const addComments = async (req, res) => {
   }
 };
 
-// const updateComments = async (req, res) => {
-//   if (
-//     !req.body.commentsImage ||
-//     !req.body.commentsForm ||
-//     !req.body.commentsFullName ||
-//     !req.body.commentsEmail ||
-//     !req.body.commentsSubject
-//   ) {
-//     return res.status(400).send({
-//       success: false,
-//       message: "Comments data not found",
-//     });
-//   }
-//   CommentModel
-//     .findByIdAndUpdate(
-//       req.params.id,
-//       {
-//         $set: req.body,
-//       },
-//       { new: true }
-//     )
-//     .then((data) => {
-//       if (!data) {
-//         return res.status(404).send({
-//           success: false,
-//           message: "Comments not found with id " + req.params.id,
-//         });
-//       }
-//       res.send({
-//         success: true,
-//         data: data,
-//       });
-//     })
-//     .catch((err) => {
-//       if (err.kind === "ObjectId") {
-//         return res.status(404).send({
-//           success: false,
-//           message: "Comments not found with id " + req.params.id,
-//         });
-//       }
-//       return res.status(500).send({
-//         success: false,
-//         message: "Error updating comments with id " + req.params.id,
-//       });
-//     });
-// };
+const updateComment = async (req, res) => {
+  if (
+    !req.body.commentsImage ||
+    !req.body.commentsForm ||
+    !req.body.commentsFullName ||
+    !req.body.commentsEmail ||
+    !req.body.commentsSubject
+  ) {
+    return res.status(400).send({
+      success: false,
+      message: "Please enter Full Name and Email",
+    });
+  }
 
-const deleteComments = async (req, res) => {
-  console.log("id ----->", req.params.id);
-  CommentModel.findByIdAndRemove(req.params.id)
+  CommentsModel.findByIdAndUpdate(
+    req.params.id,
+    {
+      $set: req.body,
+    },
+    { new: true }
+  )
     .then((data) => {
       if (!data) {
         return res.status(404).send({
           success: false,
-          message: "comments not found with id " + req.params.id,
+          message: "Comment not found with id " + req.params.id,
+        });
+      }
+      res.send({
+        success: true,
+        data: data,
+      });
+    })
+    .catch((err) => {
+      if (err.kind === "ObjectId") {
+        return res.status(404).send({
+          success: false,
+          message: "Comment not found with id " + req.params.id,
+        });
+      }
+      return res.status(500).send({
+        success: false,
+        message: "Error updating comment with id " + req.params.id,
+      });
+    });
+};
+
+const deleteComment = async (req, res) => {
+  CommentsModel.findByIdAndRemove(req.params.id)
+    .then((data) => {
+      if (!data) {
+        return res.status(404).send({
+          success: false,
+          message: "comment not found with id " + req.params.id,
         });
       }
       res.json({
         success: true,
-        message: "comments successfully deleted!",
+        message: "comment successfully deleted!",
         data: data,
       });
     })
@@ -114,14 +129,20 @@ const deleteComments = async (req, res) => {
       if (err.kind === "ObjectId" || err.name === "NotFound") {
         return res.status(404).send({
           success: false,
-          message: "comments not found with id " + req.params.id,
+          message: "comment not found with id " + req.params.id,
         });
       }
       return res.status(500).send({
         success: false,
-        message: "Could not delete comments with id " + req.params.id,
+        message: "Could not delete comment with id " + req.params.id,
       });
     });
 };
 
-module.exports = { getComments, addComments, deleteComments };
+module.exports = {
+  getAllComments,
+  getcomment,
+  addComment,
+  updateComment,
+  deleteComment,
+};
