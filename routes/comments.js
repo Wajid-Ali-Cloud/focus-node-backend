@@ -20,8 +20,8 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
-router.get("/getComments", getAllComments);
-router.get("/getComments/:id", getcomment);
+router.get("/getAllComment", getAllComments);
+router.get("/getAllComment/:id", getcomment);
 router.post("/addComment", upload.single("commentsImage"), addComment);
 router.put("/updateComment/:id", upload.single("commentsImage"), updateComment);
 router.delete("/deleteComment/:id", deleteComment);

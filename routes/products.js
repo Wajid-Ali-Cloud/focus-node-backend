@@ -5,6 +5,7 @@ const multer = require("multer");
 const {
   getAllProducts,
   getProduct,
+  getProductByName,
   addProduct,
   updateProduct,
   deleteProduct,
@@ -20,8 +21,9 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
-router.get("/getAllProducts", getAllProducts);
-router.get("/getAllProducts/:id", getProduct);
+router.get("/getAllProduct", getAllProducts);
+router.get("/getAllProduct/:id", getProduct);
+router.get("/getAllProduct/title", getProductByName);
 router.post("/addProduct", upload.single("productImage"), addProduct);
 router.put("/updateProduct/:id", upload.single("productImage"), updateProduct);
 router.delete("/deleteProduct/:id", deleteProduct);

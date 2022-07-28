@@ -19,8 +19,8 @@ const {
 // });
 // const upload = multer({ storage: storage });
 
-router.get("/getAllOrders", getAllOrder);
-router.get("/getAllOrders/:id", orderById);
+router.get("/getAllOrder", getAllOrder);
+router.get("/getAllOrder/:id", orderById);
 router.post("/createOrder", createOrder);
 router.delete("/deleteOrder/:id", deleteOrder);
 

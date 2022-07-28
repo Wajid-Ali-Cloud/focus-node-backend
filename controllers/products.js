@@ -29,6 +29,25 @@ const getProduct = async (req, res, next) => {
     });
 };
 
+const getProductByName = async (req, res, next) => {
+  ProductsModel.findOne({ title: req.params.title })
+    // .select("_id name price productImage category")
+    // .populate("category")
+    // .exec()
+    .then((data) => {
+      if (data) {
+        res.status(200).json(data);
+      } else {
+        res.status(404).json({
+          message: "Product Not Found!",
+        });
+      }
+    })
+    .catch((error) => {
+      next(error);
+    });
+};
+
 const addProduct = async (req, res) => {
   console.log("req body -------->", req?.body);
   let product = new ProductsModel({
@@ -156,6 +175,7 @@ const deleteProduct = async (req, res) => {
 module.exports = {
   getAllProducts,
   getProduct,
+  getProductByName,
   addProduct,
   updateProduct,
   deleteProduct,
