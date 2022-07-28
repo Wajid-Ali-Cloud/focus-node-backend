@@ -36,6 +36,12 @@ const addComment = async (req, res) => {
   });
 
   try {
+    const userExists = await CommentsModel.findOne({
+      commentsEmail: req.body.commentsEmail,
+    });
+    if (userExists) {
+      res.status(400).json("Email already exist");
+    }
     if (Object.keys(comment).length === 0) {
       res.send({
         success: false,
