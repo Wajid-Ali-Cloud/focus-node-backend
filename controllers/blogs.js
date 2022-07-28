@@ -29,7 +29,7 @@ const getBlog = async (req, res, next) => {
 
 const addBlog = async (req, res) => {
   let blog = new BlogsModel({
-    blogImage: "http://18.212.22.154:5001/" + req.file.path.toString(),
+    blogImage: req.file.path.toString(),
     blogTitle: req.body.blogTitle,
     blogDescription: req.body.blogDescription,
     blogUserId: req.body.blogUserId,

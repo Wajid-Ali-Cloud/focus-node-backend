@@ -20,6 +20,7 @@ app.get("/", (req, res) => {
 app.use("/api", require("./routes/contactForm"));
 app.use("/api", require("./routes/user"));
 app.use("/api", require("./routes/products"));
+app.use("/api", require("./routes/order"));
 app.use("/api", require("./routes/comments"));
 app.use("/api", require("./routes/blogs"));
 

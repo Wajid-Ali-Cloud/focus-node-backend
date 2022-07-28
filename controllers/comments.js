@@ -28,7 +28,7 @@ const getcomment = async (req, res, next) => {
 
 const addComment = async (req, res) => {
   let comment = new CommentsModel({
-    commentsImage: "http://18.212.22.154:5001/" + req.file.path.toString(),
+    commentsImage: req.file.path.toString(),
     commentsForm: req.body.commentsForm,
     commentsFullName: req.body.commentsFullName,
     commentsEmail: req.body.commentsEmail,

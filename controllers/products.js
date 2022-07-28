@@ -30,8 +30,9 @@ const getProduct = async (req, res, next) => {
 };
 
 const addProduct = async (req, res) => {
+  console.log("req body -------->", req?.body);
   let product = new ProductsModel({
-    productImage: "http://18.212.22.154:5001/" + req.file.path.toString(),
+    productImage: req.file.path.toString(),
     title: req.body.title,
     description: req.body.description,
     regularPrice: req.body.regularPrice,

@@ -13,7 +13,7 @@ const getUsers = async (req, res) => {
 
 const userRegister = async (req, res) => {
   let user = new userModel({
-    profileImage: "http://18.212.22.154:5001/" + req.file.path.toString(),
+    profileImage: req.file.path.toString(),
     firstName: req.body.firstName,
     lastName: req.body.lastName,
     email: req.body.email,

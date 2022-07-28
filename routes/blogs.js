@@ -21,8 +21,8 @@ const upload = multer({ storage: storage });
 
 router.get("/getAllBlogs", getAllBlogs);
 router.get("/getAllBlog/:id", getBlog);
-router.post("/addblog", upload.single("blogImage"), addBlog);
-router.put("/updateblog/:id", upload.single("blogImage"), updateBlog);
-router.delete("/deleteblog/:id", deleteBlog);
+router.post("/addBlog", upload.single("blogImage"), addBlog);
+router.put("/updateBlog/:id", upload.single("blogImage"), updateBlog);
+router.delete("/deleteBlog/:id", deleteBlog);
 
 module.exports = router;
