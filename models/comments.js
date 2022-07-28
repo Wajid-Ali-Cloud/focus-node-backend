@@ -6,7 +6,7 @@ const commentFormSchema = mongoose.Schema(
       type: String,
       require: [true, "Image is required"],
     },
-    commentsForm: {
+    commentsDescription: {
       type: String,
       require: [true, "Comment is required"],
     },

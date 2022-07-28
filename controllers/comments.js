@@ -29,7 +29,7 @@ const getcomment = async (req, res, next) => {
 const addComment = async (req, res) => {
   let comment = new CommentsModel({
     commentsImage: req.file.path.toString(),
-    commentsForm: req.body.commentsForm,
+    commentsDescription: req.body.commentsDescription,
     commentsFullName: req.body.commentsFullName,
     commentsEmail: req.body.commentsEmail,
     commentsSubject: req.body.commentsSubject,
@@ -66,7 +66,7 @@ const addComment = async (req, res) => {
 const updateComment = async (req, res) => {
   if (
     !req.body.commentsImage ||
-    !req.body.commentsForm ||
+    !req.body.commentsDescription ||
     !req.body.commentsFullName ||
     !req.body.commentsEmail ||
     !req.body.commentsSubject
