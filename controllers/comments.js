@@ -36,10 +36,10 @@ const addComment = async (req, res) => {
   });
 
   try {
-    const userExists = await CommentsModel.findOne({
+    const emailExists = await userModel.findOne({
       commentsEmail: req.body.commentsEmail,
     });
-    if (userExists) {
+    if (emailExists) {
       res.status(400).json("Email already exist");
     }
     if (Object.keys(comment).length === 0) {
@@ -54,14 +54,15 @@ const addComment = async (req, res) => {
       .then((data) => {
         return res.status(200).send({
           success: true,
-          message: "comment successfully added",
+          message: "Comment successfully created!",
           data: data,
         });
       })
       .catch((err) => {
         return res.status(400).send({
           success: false,
-          message: err.message || "Some error occurred while sending comment.",
+          message:
+            err.message || "Some error occurred while sending a message.",
         });
       });
   } catch (error) {
