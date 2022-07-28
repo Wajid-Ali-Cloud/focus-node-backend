@@ -31,7 +31,9 @@ const userRegister = async (req, res) => {
   try {
     const userExists = await userModel.findOne({ email: req.body.email });
     if (userExists) {
-      res.status(400).json("Email already exist");
+      return res
+        .status(400)
+        .send({ success: false, message: "Email already exist" });
     }
     if (Object.keys(user).length === 0) {
       res.send({
