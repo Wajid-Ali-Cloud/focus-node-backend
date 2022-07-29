@@ -31,7 +31,7 @@ const ProductsSchema = mongoose.Schema(
       require: [true, "product feature is required"],
     },
     category: {
-      type: String,
+      type: Object,
       require: [true, "product category is required"],
     },
     feature: {
