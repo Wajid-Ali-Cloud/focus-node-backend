@@ -2,6 +2,7 @@ const router = require("express").Router();
 const {
   getAllBlogs,
   getBlog,
+  getBlogByName,
   addBlog,
   updateBlog,
   deleteBlog,
@@ -21,6 +22,7 @@ const upload = multer({ storage: storage });
 
 router.get("/getAllBlog", getAllBlogs);
 router.get("/getAllBlog/:id", getBlog);
+router.get("/getAllBlog/title", getBlogByName);
 router.post("/addBlog", upload.single("blogImage"), addBlog);
 router.put("/updateBlog/:id", upload.single("blogImage"), updateBlog);
 router.delete("/deleteBlog/:id", deleteBlog);

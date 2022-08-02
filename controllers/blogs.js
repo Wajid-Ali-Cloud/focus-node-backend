@@ -27,6 +27,25 @@ const getBlog = async (req, res, next) => {
     });
 };
 
+const getBlogByName = async (req, res, next) => {
+  BlogsModel.findOne({ blogTitle: req.params.blogTitle })
+    // .select("_id name price productImage category")
+    // .populate("category")
+    // .exec()
+    .then((data) => {
+      if (data) {
+        res.status(200).json(data);
+      } else {
+        res.status(404).json({
+          message: "Blog Not Found!",
+        });
+      }
+    })
+    .catch((error) => {
+      next(error);
+    });
+};
+
 const addBlog = async (req, res) => {
   let blog = new BlogsModel({
     blogImage: req.file.path.toString(),
@@ -148,4 +167,5 @@ module.exports = {
   addBlog,
   updateBlog,
   deleteBlog,
+  getBlogByName,
 };
