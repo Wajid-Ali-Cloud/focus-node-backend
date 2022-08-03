@@ -4,6 +4,7 @@ const router = require("express").Router();
 
 const {
   getAllOrder,
+  getOrder,
   createOrder,
   orderById,
   deleteOrder,
@@ -20,6 +21,7 @@ const {
 // const upload = multer({ storage: storage });
 
 router.get("/getAllOrder", getAllOrder);
+router.get("/getAllOrder/:id", getOrder);
 router.get("/getAllOrder/:id", orderById);
 router.post("/createOrder", createOrder);
 router.delete("/deleteOrder/:id", deleteOrder);

@@ -8,22 +8,59 @@ const getAllOrder = async (req, res) => {
     .populate("product", "name")
     .exec()
     .then((orders) => {
-      const response = {
-        count: orders.length,
-        orders: orders.map((doc) => {
-          return {
-            _id: doc._id,
-            product: doc.product,
-            quantity: doc.quantity,
-          };
-        }),
-      };
-      res.status(200).json(response);
+      return res
+        .status(200)
+        .json({ success: true, count: orders.length, orders });
     })
+    // .then((orders) => {
+    //   const response = {
+    //     count: orders.length,
+    //     orders: orders.map((data) => {
+    //       return {
+    //         _id: data._id,
+    //         product: data.product,
+    //         quantity: data.quantity,
+    //         amount: data.amount,
+    //         deliveryCharges: data.deliveryCharges,
+    //         totalAmount: data.totalAmount,
+    //         firstName: data.firstName,
+    //         lastName: data.lastName,
+    //         email: data.email,
+    //         phoneNumber: data.phoneNumber,
+    //         address: data.address,
+    //         city: data.city,
+    //         state: data.state,
+    //         Zip: data.zip,
+    //         country: data.country,
+    //       };
+    //     }),
+    //   };
+    //   res.status(200).json({ count: orders.length, orders });
+    // })
     .catch((err) => {
       res.status(500).json({
         error: err,
       });
+    });
+};
+
+const getOrder = async (req, res, next) => {
+  OrderModal.findById({ _id: req.params.id })
+    // .select("_id name price productImage category")
+    // .populate("category")
+    // .exec()
+    .then((order) => {
+      if (order) {
+        res.status(200).json(order);
+      } else {
+        res.status(404).json({
+          message: "Product Not Found!",
+        });
+      }
+    })
+    .catch((error) => {
+      next(error);
+      res.status(500).json({ success: false, message: "Product Not Found!" });
     });
 };
 
@@ -38,19 +75,27 @@ const createOrder = async (req, res) => {
       const order = new OrderModal({
         _id: mongoose.Types.ObjectId(),
         quantity: req.body.quantity,
+        amount: req.body.amount,
+        deliveryCharges: req.body.deliveryCharges,
+        totalAmount: req.body.totalAmount,
         product: product,
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        email: req.body.email,
+        phoneNumber: req.body.phoneNumber,
+        address: req.body.address,
+        city: req.body.city,
+        state: req.body.state,
+        Zip: req.body.zip,
+        country: req.body.country,
       });
       return order.save();
     })
-    .then((result) => {
+    .then((order) => {
       return res.status(201).json({
         status: true,
         message: "Order Placed",
-        createdOrder: {
-          _id: result._id,
-          product: result.product,
-          quantity: result.quantity,
-        },
+        createdOrder: order,
       });
     })
     .catch((err) => {
@@ -88,27 +133,38 @@ const orderById = async (req, res) => {
 };
 
 const deleteOrder = async (req, res) => {
-  const id = req.query.id;
-
-  console.log("id params ----->", req.params.id);
-  OrderModal.deleteOne({ _id: id })
-    .exec()
-    .then((response) => {
-      res.status(201).json({
-        status: true,
-        message: "Order Deleted",
+  console.log("id ------>", req.body.id);
+  OrderModal.findByIdAndRemove(req.params.id)
+    .then((order) => {
+      if (!order) {
+        return res.status(404).send({
+          success: false,
+          message: "Order not found with id " + req.params.id,
+        });
+      }
+      res.json({
+        success: true,
+        message: "Order successfully deleted!",
+        order: order,
       });
     })
     .catch((err) => {
-      return res.status(500).json({
-        status: false,
-        message: err,
+      if (err.kind === "ObjectId" || err.name === "NotFound") {
+        return res.status(404).send({
+          success: false,
+          message: "order not found with id " + req.params.id,
+        });
+      }
+      return res.status(500).send({
+        success: false,
+        message: "Could not delete order with id " + req.params.id,
       });
     });
 };
 
 module.exports = {
   getAllOrder,
+  getOrder,
   createOrder,
   orderById,
   deleteOrder,
