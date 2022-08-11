@@ -4,8 +4,8 @@ const mongoose = require("mongoose");
 
 const getAllOrder = async (req, res) => {
   OrderModal.find()
-    .select("product quantity _id")
-    .populate("product", "name")
+    // .select("product quantity _id")
+    // .populate("product", "name")
     .exec()
     .then((orders) => {
       return res
@@ -78,7 +78,6 @@ const createOrder = async (req, res) => {
         amount: req.body.amount,
         deliveryCharges: req.body.deliveryCharges,
         totalAmount: req.body.totalAmount,
-        product: product,
         firstName: req.body.firstName,
         lastName: req.body.lastName,
         email: req.body.email,
@@ -88,6 +87,7 @@ const createOrder = async (req, res) => {
         state: req.body.state,
         Zip: req.body.zip,
         country: req.body.country,
+        product: product,
       });
       return order.save();
     })

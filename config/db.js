@@ -14,7 +14,7 @@ const options = {
   family: 4, // Use IPv4, skip trying IPv6
 };
 
-// Connect and handle initial connection errors
+// Connect and handle initial connection errors 
 const DB = () => {
   mongoose.connect(uri, options).then(
     () => {
