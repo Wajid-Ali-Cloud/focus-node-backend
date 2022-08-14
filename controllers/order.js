@@ -65,45 +65,51 @@ const getOrder = async (req, res, next) => {
 };
 
 const createOrder = async (req, res) => {
-  ProductsModel.findById(req.body.productId)
-    .then((product) => {
-      if (!product) {
-        return res.status(404).json({
-          message: "Product Not found!",
-        });
-      }
-      const order = new OrderModal({
-        _id: mongoose.Types.ObjectId(),
-        quantity: req.body.quantity,
-        amount: req.body.amount,
-        deliveryCharges: req.body.deliveryCharges,
-        totalAmount: req.body.totalAmount,
-        product: product,
-        firstName: req.body.firstName,
-        lastName: req.body.lastName,
-        email: req.body.email,
-        phoneNumber: req.body.phoneNumber,
-        address: req.body.address,
-        city: req.body.city,
-        state: req.body.state,
-        Zip: req.body.zip,
-        country: req.body.country,
-      });
-      return order.save();
-    })
-    .then((order) => {
-      return res.status(201).json({
-        status: true,
-        message: "Order Placed",
-        createdOrder: order,
-      });
-    })
-    .catch((err) => {
-      return res.status(500).json({
-        status: false,
-        message: err,
-      });
+  try {
+    const orderIds = req.body.orderIds;
+
+    console.log(orderIds);
+
+    await Promise.all(
+      orderIds.map(async (id) => {
+        try {
+          console.log(id);
+          const product = await ProductsModel.findById(
+            new mongoose.Types.ObjectId(id)
+          );
+
+          return product;
+        } catch (error) {
+          console.log(error);
+          throw new Error(error);
+        }
+      })
+    );
+
+    const order = new OrderModal({
+      _id: mongoose.Types.ObjectId(),
+      quantity: req.body.quantity,
+      amount: req.body.amount,
+      deliveryCharges: req.body.deliveryCharges,
+      totalAmount: req.body.totalAmount,
+      products: orderIds,
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      email: req.body.email,
+      phoneNumber: req.body.phoneNumber,
+      address: req.body.address,
+      city: req.body.city,
+      state: req.body.state,
+      Zip: req.body.zip,
+      country: req.body.country,
     });
+    order.save();
+
+    res.status(201).json("orders created successfully!");
+  } catch (error) {
+    res.status(400).json(error);
+    console.log(error);
+  }
 };
 
 const orderById = async (req, res) => {

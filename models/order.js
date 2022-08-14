@@ -2,11 +2,13 @@ const mongoose = require("mongoose");
 
 const OrderScheema = mongoose.Schema(
   {
-    product: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "products",
-      required: true,
-    },
+    products: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "products",
+        required: true,
+      },
+    ],
     subTotal: { type: Number, require: [true, "Sub Total is required"] },
     deliveryCharges: {
       type: Number,
