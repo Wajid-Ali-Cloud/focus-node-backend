@@ -4,8 +4,8 @@ const mongoose = require("mongoose");
 
 const getAllOrder = async (req, res) => {
   OrderModal.find()
-    .select("product quantity _id")
-    .populate("product", "name")
+    // .select("product quantity _id")
+    // .populate("product", "name")
     .exec()
     .then((orders) => {
       return res
